@@ -1,2 +1,3 @@
-# learning-zephyr
-Zephyr Examples
+# Learning Zephyr
+
+learn Zephyr

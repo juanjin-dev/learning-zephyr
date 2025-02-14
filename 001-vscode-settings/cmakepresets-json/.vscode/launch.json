@@ -1,0 +1,93 @@
+/**
+ * SPDX-License-Identifier: BSL-1.0
+ */
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "cppdbg",
+            "name": "App Flash & Debug (openocd/stlink/stm32f4x)",
+            "request": "launch",
+            "program": "${command:cmake.buildDirectory}/zephyr/zephyr.elf",
+            "cwd": "${workspaceFolder}",
+			"MIMode": "gdb",
+			"miDebuggerPath": "${env:ZEPHYR_BASE}/../sdk/zephyr-sdk-0.17.0/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb",
+            "externalConsole": false,
+            "filterStderr": true,
+            "filterStdout": false,
+            "serverLaunchTimeout": 5000,
+            "debugServerPath": "openocd",
+            "debugServerArgs":
+                "-f interface/stlink.cfg -f target/stm32f4x.cfg -c \"program ${command:cmake.buildDirectory}/zephyr/zephyr.bin 0x08000000 verify\" -c \"$_CHIPNAME.cpu configure -rtos Zephyr\"",
+            "miDebuggerServerAddress": ":3333",
+            "symbolLoadInfo": {
+                "loadAll": true,
+                "exceptionList": ""
+            },
+            "stopAtConnect": true,
+            "useExtendedRemote": true,
+            "postRemoteConnectCommands": [
+                {
+                    "description": "Enable pretty printing for gdb",
+                    "text": "-enable-pretty-printing",
+                },
+                {
+                    "text": "maintenance flush register-cache"
+                },
+                {
+                    "text": "mon reset halt"
+                },
+            ],
+            "logging": {
+                "moduleLoad": true,
+                "trace": true,
+                "engineLogging": true,
+                "programOutput": true,
+                "exceptions": true
+            },
+        },
+        {
+            "type": "cppdbg",
+            "name": "App Debug (openocd/stlink/stm32f4x)",
+            "request": "launch",
+            "program": "${command:cmake.buildDirectory}/zephyr/zephyr.elf",
+            "cwd": "${workspaceFolder}",
+			"MIMode": "gdb",
+			"miDebuggerPath": "${env:ZEPHYR_BASE}/../sdk/zephyr-sdk-0.17.0/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb",
+            "externalConsole": false,
+            "filterStderr": true,
+            "filterStdout": false,
+            "serverLaunchTimeout": 5000,
+            "debugServerPath": "openocd",
+            "debugServerArgs":
+                "-f interface/stlink.cfg -f target/stm32f4x.cfg -c \"$_CHIPNAME.cpu configure -rtos Zephyr\"",
+            "miDebuggerServerAddress": ":3333",
+            "symbolLoadInfo": {
+                "loadAll": true,
+                "exceptionList": ""
+            },
+            "stopAtConnect": true,
+            "useExtendedRemote": true,
+            "postRemoteConnectCommands": [
+                {
+                    "description": "Enable pretty printing for gdb",
+                    "text": "-enable-pretty-printing",
+                },
+                {
+                    "text": "maintenance flush register-cache"
+                },
+                {
+                    "text": "mon reset halt"
+                },
+            ],
+            "logging": {
+                "moduleLoad": true,
+                "trace": true,
+                "engineLogging": true,
+                "programOutput": true,
+                "exceptions": true
+            },
+        }
+    ]
+}

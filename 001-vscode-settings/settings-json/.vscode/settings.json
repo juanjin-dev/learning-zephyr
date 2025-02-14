@@ -1,0 +1,13 @@
+/**
+ * SPDX-License-Identifier: BSL-1.0
+ */
+
+{
+    "cmake.generator": "Ninja",
+    "cmake.configureArgs": [
+        "-DNO_BUILD_TYPE_WARNING=ON",
+        "-DBOARD=blackpill_f411ce",
+        "-DCONF_FILE=${workspaceFolder}/prj.conf;${workspaceFolder}/boards/blackpill_f411ce.conf",
+        "-DDTC_OVERLAY_FILE=${workspaceFolder}/boards/blackpill_f411ce.overlay"
+    ],
+}

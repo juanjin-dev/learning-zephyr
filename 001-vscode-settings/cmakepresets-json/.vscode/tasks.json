@@ -1,0 +1,37 @@
+/**
+ * SPDX-License-Identifier: BSL-1.0
+ */
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flash App (blackpill_f411ce, openocd/stlink)",
+            "type": "shell",
+            "command": "openocd",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "args": [
+                "-f",
+                "interface/stlink.cfg",
+                "-f",
+                "target/stm32f4x.cfg",
+                "-c",
+                "program ${command:cmake.buildDirectory}/zephyr/zephyr.bin 0x08000000 reset verify exit"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [],
+            "dependsOn": [
+                "CMake: build"
+            ]
+        }
+    ]
+}

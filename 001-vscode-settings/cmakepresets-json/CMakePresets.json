@@ -1,0 +1,50 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${fileDir}/${presetName}",
+            "cacheVariables": {
+                "NO_BUILD_TYPE_WARNING": "ON"
+            }
+        },
+        {
+            "name": "debug-base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CONFIG_DEBUG": "y",
+                "CONFIG_DEBUG_THREAD_INFO": "y"
+            }
+        },
+        {
+            "name": "release-base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "blackpill_f411ce-debug",
+            "inherits": "debug-base",
+            "cacheVariables": {
+                "NO_BUILD_TYPE_WARNING": "ON",
+                "BOARD": "blackpill_f411ce",
+                "CONF_FILE": "${workspaceFolder}/prj.conf;${workspaceFolder}/boards/blackpill_f411ce.conf",
+                "DTC_OVERLAY_FILE": "${workspaceFolder}/boards/blackpill_f411ce.overlay"
+            }
+        },
+        {
+            "name": "blackpill_f411ce-release",
+            "inherits": "release-base",
+            "cacheVariables": {
+                "NO_BUILD_TYPE_WARNING": "ON",
+                "BOARD": "blackpill_f411ce",
+                "CONF_FILE": "${workspaceFolder}/prj.conf;${workspaceFolder}/boards/blackpill_f411ce.conf",
+                "DTC_OVERLAY_FILE": "${workspaceFolder}/boards/blackpill_f411ce.overlay"
+            }
+        }
+    ]
+}
