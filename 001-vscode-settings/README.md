@@ -7,3 +7,5 @@
 [Settings with settings.json](./settings-json)
 
 [Settings with CMakePresets.json](./cmakepresets-json)
+
+[Settings with .code-workspace](./code-workspace)
