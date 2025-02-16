@@ -1,3 +1,18 @@
 /**
  * SPDX-Identifier 
  */
+
+/ {
+	pwmleds: pwmleds {
+    	status = "okay";
+		compatible = "pwm-leds";
+
+		pwmled0: pwmled0 {
+			pwms = <&pwm4 1 65535 PWM_POLARITY_NORMAL>;
+		};
+
+		pwmled1: pwmled1 {
+			pwms = <&pwm4 2 65535 PWM_POLARITY_NORMAL>;
+		};
+	};
+};

@@ -3,48 +3,67 @@
  */
 
 #include <zephyr/kernel.h>
-#include <zephyr/drivers/gpio.h>
-
-static void switch_callback(const struct device *port,
-                            struct gpio_callback *cb, uint32_t pins)
-{
-    printk("GPIO interrupt!: %d\n", gpio_pin_get(port, pins));
-}
+#include <zephyr/drivers/led.h>
+struct pwmled_data {
+    const struct led_dt_spec pwmled;
+    bool dir;
+    uint8_t brightness;
+};
 
 int main(void) {
     int ret;
-    const struct gpio_dt_spec switchy =
-        GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios);
-    struct gpio_callback switch_cb;
+    struct k_timer timer;
+    struct pwmled_data pwmleds[] = {
+        {
+            .pwmled = LED_DT_SPEC_GET(DT_NODELABEL(pwmled0)),
+            .dir = false,
+            .brightness = 0,
+        },
+        {
+            .pwmled = LED_DT_SPEC_GET(DT_NODELABEL(pwmled1)),
+            .dir = true,
+            .brightness = 100,
+        }
+    };
 
-    if (!device_is_ready(switchy.port)) {
-        printk("Error: GPIO port %s is not ready\n", switchy.port->name);
-        goto out;
+    ARRAY_FOR_EACH_PTR(pwmleds, pwmled) {
+        if (!led_is_ready_dt(&pwmled->pwmled)) {
+            printk("Error: LED %s is not ready\n",
+                    pwmled->pwmled.dev->name);
+            goto out;
+        }
     }
 
-    printk("Hell Zephyr!: %s(%s, %s), %lldms\r\n",
-        CONFIG_BOARD, CONFIG_ARCH, CONFIG_SOC, k_uptime_get());
+    k_timer_init(&timer, NULL, NULL);
+    k_timer_start(&timer, K_NO_WAIT, K_MSEC(5));
 
-    ret = gpio_pin_configure_dt(&switchy, GPIO_INPUT);
-    if (ret) {
-        printk("Error: gpio_pin_configure_dt - %d\r\n", ret);
-        goto out;
+    while (true) {
+        int elapsed = k_timer_status_sync(&timer);
+        if (elapsed > 1) {
+            printk("Error: timer is %d ms late\n", elapsed);
+            k_timer_stop(&timer);
+            goto out;
+        }
+
+        ARRAY_FOR_EACH_PTR(pwmleds, pwmled) {
+            ret = led_set_brightness_dt(&pwmled->pwmled, pwmled->brightness);
+            if (ret) {
+                printk("Error %d: failed to set pulse width\n", ret);
+                k_timer_stop(&timer);
+                goto out;
+            }
+
+            if (!pwmled->dir) {
+                pwmled->brightness += 1;
+            } else {
+                pwmled->brightness -= 1;
+            }
+
+            if (pwmled->brightness == 0 || pwmled->brightness == 100) {
+                pwmled->dir = !pwmled->dir;
+            }
+        }
     }
-
-    ret = gpio_pin_interrupt_configure_dt(&switchy, GPIO_INT_EDGE_BOTH);
-    if (ret) {
-        printk("Error: gpio_pin_interrupt_configure_dt - %d\r\n", ret);
-        goto out;
-    }
-
-    gpio_init_callback(&switch_cb, switch_callback, BIT(switchy.pin));
-
-    ret = gpio_add_callback_dt(&switchy, &switch_cb);
-    if (ret) {
-        printk("Error: gpio_add_callback_dt - %d\r\n", ret);
-    }
-
-    k_sleep(K_FOREVER);
 
 out:
     return 0;

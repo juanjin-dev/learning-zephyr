@@ -5,46 +5,50 @@
             "name": "base",
             "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "${fileDir}/${presetName}",
+            "binaryDir": "${fileDir}/build/${presetName}",
             "cacheVariables": {
-                "NO_BUILD_TYPE_WARNING": "ON"
+                "NO_BUILD_TYPE_WARNING": "ON",
+                "BOARD": "${env:BOARD}",
+                "CONF_FILE": "${workspaceFolder}/prj.conf;${workspaceFolder}/boards/${env:BOARD}.conf",
+                "DTC_OVERLAY_FILE": "${workspaceFolder}/boards/${env:BOARD}.overlay"
             }
         },
         {
             "name": "debug-base",
             "hidden": true,
+            "inherits": "base",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CONFIG_DEBUG": "y",
-                "CONFIG_DEBUG_THREAD_INFO": "y"
+                "CONFIG_DEBUG_THREAD_INFO": "y",
+                "CONFIG_NO_OPTIMIZATIONS": "y"
             }
         },
         {
             "name": "release-base",
             "hidden": true,
+            "inherits": "base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "blackpill_f411ce",
+            "hidden": true,
+            "environment": {
+                "BOARD": "blackpill_f411ce"
+            },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
             "name": "blackpill_f411ce-debug",
-            "inherits": "debug-base",
-            "cacheVariables": {
-                "NO_BUILD_TYPE_WARNING": "ON",
-                "BOARD": "blackpill_f411ce",
-                "CONF_FILE": "${workspaceFolder}/prj.conf;${workspaceFolder}/boards/blackpill_f411ce.conf",
-                "DTC_OVERLAY_FILE": "${workspaceFolder}/boards/blackpill_f411ce.overlay"
-            }
+            "inherits": [ "blackpill_f411ce", "debug-base" ]
         },
         {
             "name": "blackpill_f411ce-release",
-            "inherits": "release-base",
-            "cacheVariables": {
-                "NO_BUILD_TYPE_WARNING": "ON",
-                "BOARD": "blackpill_f411ce",
-                "CONF_FILE": "${workspaceFolder}/prj.conf;${workspaceFolder}/boards/blackpill_f411ce.conf",
-                "DTC_OVERLAY_FILE": "${workspaceFolder}/boards/blackpill_f411ce.overlay"
-            }
+            "inherits": [ "blackpill_f411ce", "release-base" ]
         }
     ]
 }
