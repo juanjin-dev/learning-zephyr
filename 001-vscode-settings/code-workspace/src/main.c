@@ -41,8 +41,18 @@ int main(void) {
     }
     
     while (true) {
-        my_device_do_something(dev, 3);
-        my_device_do_something_else(dev);
+        ret = my_device_do_something(dev, 3);
+        if (ret) {
+            printk("Failed to do something\n");
+            goto out;
+        }
+
+        ret = my_device_do_something_else(dev);
+        if (ret) {
+            printk("Failed to do something else\n");
+            goto out;
+        }
+        
         k_sleep(K_MSEC(1000));
     }
  
