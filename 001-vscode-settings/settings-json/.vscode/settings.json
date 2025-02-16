@@ -13,8 +13,5 @@
         "-DBOARD=blackpill_f411ce",
         "-DCONF_FILE=${workspaceFolder}/prj.conf;${workspaceFolder}/boards/blackpill_f411ce.conf",
         "-DDTC_OVERLAY_FILE=${workspaceFolder}/boards/blackpill_f411ce.overlay"
-    ],
-    "files.associations": {
-        "input.h": "c"
-    },
+    ]
 }
