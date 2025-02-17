@@ -37,11 +37,7 @@ static void input_callback(struct input_event *evt, void *user_data)
     }
 }
 
-INPUT_CALLBACK_DEFINE(
-    // DEVICE_DT_GET(DT_ALIAS(sw0)),
-    NULL,
-    input_callback, NULL
-);
+INPUT_CALLBACK_DEFINE(NULL, input_callback, NULL);
 
 int main(void) {
     printk("Hell Zephyr!: %s(%s, %s), %lldms\r\n",
