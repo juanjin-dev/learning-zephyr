@@ -1,7 +1,3 @@
 {
-    "cmake.useCMakePresets": "always",
-    "files.associations": {
-        "led.h": "c",
-        "stm32f411xe.h": "c"
-    }
+    "cmake.useCMakePresets": "always"
 }
