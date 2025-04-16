@@ -9,8 +9,8 @@
             "cacheVariables": {
                 "NO_BUILD_TYPE_WARNING": "ON",
                 "BOARD": "${env:BOARD}",
-                "CONF_FILE": "${workspaceFolder}/prj.conf;${workspaceFolder}/boards/${env:BOARD}.conf",
-                "DTC_OVERLAY_FILE": "${workspaceFolder}/boards/${env:BOARD}.overlay"
+                "CONF_FILE": "${fileDir}/prj.conf;${fileDir}/boards/${env:BOARD}.conf",
+                "DTC_OVERLAY_FILE": "${fileDir}/boards/${env:BOARD}.overlay"
             }
         },
         {
